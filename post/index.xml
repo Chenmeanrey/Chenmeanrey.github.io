@@ -6,10 +6,21 @@
     <description>Recent content in Posts on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 31 Dec 2019 02:21:44 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 31 Dec 2019 02:53:35 +0800</lastBuildDate>
     
 	<atom:link href="http://chenmeanrey.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>3方法引用和构造器引用</title>
+      <link>http://chenmeanrey.github.io/post/3%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E5%92%8C%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%95%E7%94%A8/</link>
+      <pubDate>Tue, 31 Dec 2019 02:53:35 +0800</pubDate>
+      
+      <guid>http://chenmeanrey.github.io/post/3%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E5%92%8C%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%95%E7%94%A8/</guid>
+      <description>###方法引用和构造器引用 * 若Lambda体中的内容有方法已经实现了,我们可以使用方法引用 可以理解为方法引用的Lambda表达式的另外一中表现形式
+主要有三种语法格式: - 对象::实例方法名 - 类::静态方法名 - 类::实例方法名 - 注意 - 1、Lambda 体中调用方法的参数列表与返回值类型,要与函数式接口抽象方法的函数列表和返回值类型保持一致 - 2、若Lambda参数列表中的第一参数是实例方法的调用者,而第二个参数是该实例方法的参数时,可以使用ClassName::methodName
+//对象::实例方法名 @Test public void test1(){ Consumer&amp;lt;String&amp;gt; con = x -&amp;gt; System.out.println(x); PrintStream ps = System.out; Consumer&amp;lt;String&amp;gt; con1 = ps::println; }  //类::静态方法名 @Test public void test3(){ Comparator&amp;lt;Integer&amp;gt; com = (x,y) -&amp;gt; Integer.compare(x,y); //就全等于 Comparator&amp;lt;Integer&amp;gt; com1 = Integer::compare; System.out.println(com1.compare(5, 3)); }  //类::实例方法名 @Test public void test4(){ String str = &amp;quot;alice&amp;quot;; String str1 =&amp;quot;alice&amp;quot;; BiPredicate&amp;lt;String,String&amp;gt; bp = (x,y) -&amp;gt; x.</description>
+    </item>
     
     <item>
       <title>Newblog</title>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://chenmeanrey.github.io/post/3%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E5%92%8C%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%95%E7%94%A8/</loc>
+    <lastmod>2019-12-31T02:53:35+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://chenmeanrey.github.io/post/newblog/</loc>
     <lastmod>2019-12-31T02:21:44+08:00</lastmod>
   </url>
@@ -24,13 +29,13 @@
   
   <url>
     <loc>http://chenmeanrey.github.io/</loc>
-    <lastmod>2019-12-31T02:21:44+08:00</lastmod>
+    <lastmod>2019-12-31T02:53:35+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://chenmeanrey.github.io/post/</loc>
-    <lastmod>2019-12-31T02:21:44+08:00</lastmod>
+    <lastmod>2019-12-31T02:53:35+08:00</lastmod>
     <priority>0</priority>
   </url>
   
