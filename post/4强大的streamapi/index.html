@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/images/favicon.png" type="image/png">
 
-    <title>1Java8新特性lambda表达式初步 :: My New Hugo Site</title>
+    <title>4强大的StreamAPI :: My New Hugo Site</title>
 
     
     <link href="/css/nucleus.css?1577732504" rel="stylesheet">
@@ -33,7 +33,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/post/1java8%E6%96%B0%E7%89%B9%E6%80%A7lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%88%9D%E6%AD%A5/">
+  <body class="" data-url="/post/4%E5%BC%BA%E5%A4%A7%E7%9A%84streamapi/">
     <nav id="sidebar" class="">
 
 
@@ -116,7 +116,7 @@
  
   
     
-      <li data-nav-id="/post/4%E5%BC%BA%E5%A4%A7%E7%9A%84streamapi/" title="4强大的StreamAPI" class="dd-item ">
+      <li data-nav-id="/post/4%E5%BC%BA%E5%A4%A7%E7%9A%84streamapi/" title="4强大的StreamAPI" class="dd-item active">
         <a href="/post/4%E5%BC%BA%E5%A4%A7%E7%9A%84streamapi/">
         4强大的StreamAPI
         
@@ -173,7 +173,7 @@
  
   
     
-      <li data-nav-id="/post/1java8%E6%96%B0%E7%89%B9%E6%80%A7lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%88%9D%E6%AD%A5/" title="1Java8新特性lambda表达式初步" class="dd-item active">
+      <li data-nav-id="/post/1java8%E6%96%B0%E7%89%B9%E6%80%A7lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%88%9D%E6%AD%A5/" title="1Java8新特性lambda表达式初步" class="dd-item ">
         <a href="/post/1java8%E6%96%B0%E7%89%B9%E6%80%A7lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%88%9D%E6%AD%A5/">
         1Java8新特性lambda表达式初步
         
@@ -261,7 +261,7 @@
             
           
           
-            <a href='/'>My New Hugo Site</a> > <a href='/post/'>Posts</a> > 1Java8新特性lambda表达式初步
+            <a href='/'>My New Hugo Site</a> > <a href='/post/'>Posts</a> > 4强大的StreamAPI
           
          
           
@@ -290,7 +290,7 @@
           
             <h1>
               
-              1Java8新特性lambda表达式初步
+              4强大的StreamAPI
             </h1>
           
 
@@ -298,289 +298,6 @@
 
 
 
-<ol>
-<li>原来的匿名内部类
-<code>java
-@Test
-public void test1(){
-Comparator&lt;Integer&gt; com = new Comparator&lt;Integer&gt;() {
-    @Override
-    public int compare(Integer o1, Integer o2) {
-        return Integer.compare(5,3);
-    }
-};
-//以上在匿名内部类中实现接口直接得到结果
-TreeSet&lt;Integer&gt; ts = new TreeSet&lt;&gt;(com);
-}
-</code>
-<strong>用Lambda表达式</strong>
-全等于上面的代码
-<code>java
-@Test
-public void test2(){
-Comparator&lt;Integer&gt; com =(x,y) -&gt; Integer.compare(x,y);
-TreeSet&lt;Integer&gt; ts = new TreeSet&lt;&gt;(com);
-}
-</code></li>
-<li>查询员工集合中工资大于3500的员工姓名
-&gt; 先建立一个员工类
-<code>java
-@Data
-public class Employee {
-private String name;
-private int age;
-private double salary;
-}
-</code>
-&gt; 再建一个集合
-<code>java
-List&lt;Employee&gt; employees = Arrays.asList(
-new Employee(&quot;张三&quot;,18,9999.99),
-new Employee(&quot;李四&quot;,38,5555.99),
-new Employee(&quot;王五&quot;,50,3333.99),
-new Employee(&quot;赵六&quot;,16,6666.99),
-new Employee(&quot;田七&quot;,8,7777.99)
-);
-</code>
-<strong>传统操作</strong>
-<code>java
-@Test
-public List&lt;Employee&gt; filterEmployee(List&lt;Employee&gt; list){
-List&lt;Employee&gt; emps = new ArrayList&lt;&gt;();
-for (Employee emp : list) {
-    if (emp.getAge() &gt;=35){
-        emps.add(emp);
-    }
-}
-return emps;
-}
-</code>
-变化条件
-<code>java
-//当条件变化成工资大于5000时
-@Test
-public List&lt;Employee&gt; filterEmployee1(List&lt;Employee&gt; list){
-List&lt;Employee&gt; emps = new ArrayList&lt;&gt;();
-for (Employee emp : list) {
-    if (emp.getSalary() &gt;=5000){
-        emps.add(emp);
-    }
-}
-return emps;
-}
-</code>
-因此可以抽取出一个接口进行优化
-<code>java
-//定义规则的接口
-public interface Mypredicate&lt;T&gt; {
-public boolean test(T t);
-}
-</code>
-写一个实现
-<code>java
-public class FilterEmployeeByAge implements Mypredicate&lt;Employee&gt; {
-@Override
-public boolean test(Employee t) {
-    return t.getAge() &gt;=35;
-}
-}
-</code>
-然后调用实现方法来处理集合
-<code>java
-public List&lt;Employee&gt; filterEmployee(List&lt;Employee&gt; list,Mypredicate&lt;Employee&gt; mp){
-List&lt;Employee&gt; emps = new ArrayList&lt;&gt;();
-for (Employee employee : list) {
-    if (mp.test(employee)){
-        emps.add(employee);
-    }
-}
-return emps;
-}
-</code>
-最后将调用方法将数据处理输出
-<code>java
-@Test
-public void test3(){
-List&lt;Employee&gt; list = filterEmployee(employees,new FilterEmployeeByAge());
-for (Employee employee : list) {
-    System.out.println(employee);
-}
-}
-</code>
-结果是:
-&gt; Employee(name=李四, age=38, salary=5555.99)
-Employee(name=王五, age=50, salary=3333.99)</li>
-</ol>
-
-<p>这样太麻烦了而且不灵活,使用匿名内部类直接实现接口,跳过实现方法</p>
-
-<pre><code class="language-java">@Test
-public void test4(){
-    List&lt;Employee&gt; list = filterEmployee(employees, new Mypredicate&lt;Employee&gt;() {
-        @Override
-        public boolean test(Employee employee) {
-            return employee.getSalary() &lt;= 5000;
-        }
-    });
-    for (Employee employee : list) {
-        System.out.println(employee);
-    }
-}
-</code></pre>
-
-<p><strong>Lambda表达式</strong>
-有接口,直接改写规则</p>
-
-<pre><code class="language-java">@Test
-public void test5(){
-    List&lt;Employee&gt; list = filterEmployee(employees, (e) -&gt; e.getSalary() &lt;= 5000);
-    list.forEach(System.out::println);
-}
-</code></pre>
-
-<p><strong>用stream API加Lambda表达式</strong></p>
-
-<pre><code class="language-java">//优化
-@Test
-public void test6(){
-    employees.stream()
-            .filter((e) -&gt; e.getSalary() &gt;=5000)
-            .limit(2)
-            .forEach(System.out::println);
-    System.out.println(&quot;-------------------------&quot;);
-    employees.stream()
-            .map(Employee::getName)
-            .forEach(System.out::println);
-}
-</code></pre>
-
-<p>Lambda表达式的基础语法
-一、java8中引入了新的操作符&rdquo;-&gt;&ldquo;,左侧:表达式的参数列表,右侧:表达式中所需执行的功能(lambda体)
-语法格式一:无参数,无返回值
-<code>() -&gt; System.out.println(&quot;Hello Lambda!&quot;);</code></p>
-
-<pre><code class="language-java">@Test
-public void test7(){
-    int num = 0;//1.7以前要写final
-    Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            System.out.println(&quot;Hello World!&quot;+num);
-        }
-    };
-    r.run();
-    System.out.println(&quot;-------------------&quot;);
-    Runnable r1 = () -&gt; System.out.println(&quot;Hello Lambda&quot;+num);
-    r1.run();
-}
-</code></pre>
-
-<p>语法格式二:有1参数,无返回值</p>
-
-<pre><code class="language-java">@Test
-public void test8(){
-    Consumer&lt;String&gt; con = (x) -&gt; System.out.println(x);
-    con.accept(&quot;cmr is cool&quot;);
-}
-</code></pre>
-
-<p>若只有一个参数,参数的小括号可以不写,习惯上写上
-语法格式三:有多个参数,有返回值,Lambda体中有多条语句,Lambda体必须用大括号括起来,若只有一条语句,则return和大括号都可以不写</p>
-
-<pre><code class="language-java">@Test
-public void test9(){
-    Comparator&lt;Integer&gt; com = (x,y) -&gt; {
-        System.out.println(&quot;函数式接口&quot;);
-        return Integer.compare(x,y);
-    };
-    System.out.println(com.compare(5,3));
-}
-</code></pre>
-
-<p>语法格式四:Lambda表达式的参数列表的数据类型可以省略不写,因为JVM编译器可以通过上下文推断出&rdquo;数据类型&rdquo;
-二、Lambda表达式需要&rdquo;函数式接口&rdquo;的支持
-函数式接口:接口中只有一个抽象方法的接口,可以使用注解@FunctionalInterface来检查是否是函数式接口
-- 需求:对一个数进行运算
-1. 写一个接口定义</p>
-
-<pre><code class="language-java">@FunctionalInterface
-public interface MyFun {
-    Integer getValue(Integer num);
-}
-</code></pre>
-
-<ol>
-<li>写接口的实现
-<code>java
-public Integer opretion(Integer num, MyFun mf){
-return mf.getValue(num);
-}
-</code></li>
-<li>用lambda自定义规则
-<code>java
-@Test
-public void test10(){
-System.out.println(opretion(100, x -&gt; x*x));
-}
-</code>
-####练习题</li>
-<li>调用Conllections.sort()方法,通过定制排序比较两个Employee(先按年龄比,年龄相同则按姓名比),使用lambda作为参数传递
-<code>java
-@Test
-public void test11(){
-Collections.sort(employees,(e1,e2) -&gt;{
-    if (e1.getAge() == e2.getAge()){
-        return e1.getName().compareTo(e2.getName());
-    }else {
-        return -Integer.compare(e1.getAge(),e2.getAge());
-    }
-});
-for (Employee employee : employees) {
-    System.out.println(employee);
-}
-}
-</code></li>
-<li>声明一个函数式接口,方法:String getValue(String str);
-声明类,Test,类中编写方法使用接口做为参数将一个字符串转换为大写并返回;
-a. 按照题意写出接口
-<code>java
-@FunctionalInterface
-public interface MyFunc {
-public String getValue(String str);
-}
-</code>
-b. 写出实现并用Lambda指定规则
-<code>java
-public String strHandler(String str, MyFunc mf){
-return mf.getValue(str);
-}
-@Test
-public void test12(){
-System.out.println(strHandler(&quot;\t\t\r白日依山尽&quot;, (str -&gt; str.trim())));
-System.out.println(strHandler(&quot;chenmeanrey&quot;, (str -&gt; str.toUpperCase())));
-System.out.println(strHandler(&quot;黄河入海流&quot;, (str -&gt; str.substring(2,5))));
-}
-</code></li>
-<li>声明一个带泛型的函数式接口,泛型类型为<T,R> T为入参,R为返回值,声明抽象方法
-在test类中声明方法,使用接口作为参数,计算两个long型参数的和,再计算两个long型参数的积
-a. 写接口
-<code>java
-public interface MyFunc2&lt;T,R&gt; {
-public R getValue(T t1,T t2);
-}
-</code>
-b. 写实现
-<code>java
-public Integer opre(Long m, Long n, MyFunc2&lt;Long,Long&gt; mf){
-return mf.getValue(m,n).intValue();
-}
-@Test
-public void test13(){
-System.out.println(opre(56L, 77L, (x, y) -&gt; x + y));
-System.out.println(opre(56L, 77L, (x, y) -&gt; x * y));
-}
-</code></li>
-</ol>
 
 
 <footer class=" footline" >
@@ -633,6 +350,23 @@ System.out.println(opre(56L, 77L, (x, y) -&gt; x * y));
             
                 
                     
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                         
                         
                     
@@ -683,26 +417,6 @@ System.out.println(opre(56L, 77L, (x, y) -&gt; x * y));
             
             
                 
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 
@@ -727,10 +441,10 @@ System.out.println(opre(56L, 77L, (x, y) -&gt; x * y));
 	 
 	 
 		
-			<a class="nav nav-prev" href="/post/newblog/" title="Newblog"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/post/" title="Posts"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/post/blog/" title="FirstBlog" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/post/3%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E5%92%8C%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%95%E7%94%A8/" title="3方法引用和构造器引用" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
