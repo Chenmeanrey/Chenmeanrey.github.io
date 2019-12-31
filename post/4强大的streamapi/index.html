@@ -12,18 +12,18 @@
     <title>4强大的StreamAPI :: My New Hugo Site</title>
 
     
-    <link href="/css/nucleus.css?1577763956" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1577763956" rel="stylesheet">
-    <link href="/css/hybrid.css?1577763956" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1577763956" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1577763956" rel="stylesheet">
-    <link href="/css/auto-complete.css?1577763956" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1577763956" rel="stylesheet">
-    <link href="/css/theme.css?1577763956" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1577763956" rel="stylesheet">
+    <link href="/css/nucleus.css?1577764744" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1577764744" rel="stylesheet">
+    <link href="/css/hybrid.css?1577764744" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1577764744" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1577764744" rel="stylesheet">
+    <link href="/css/auto-complete.css?1577764744" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1577764744" rel="stylesheet">
+    <link href="/css/theme.css?1577764744" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1577764744" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1577763956"></script>
+    <script src="/js/jquery-3.3.1.min.js?1577764744"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -68,14 +68,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1577763956"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1577763956"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1577764744"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1577764744"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/chenmeanrey.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1577763956"></script>
+<script type="text/javascript" src="/js/search.js?1577764744"></script>
 
     
   </div>
@@ -332,113 +332,123 @@ public void test(){
 <li>filter-接收Lambda,从流中排除某些元素</li>
 <li>limit-截断流,使其元素不超过给定数量</li>
 <li>skip(n)-跳过元素,返回一个扔掉前n个元素的流,若流中元素不足n个,则返回空流.与limit(n)形成互补</li>
-<li>distinct-筛选,通过流所生成元素的hashcode()和equals()去除重复元素
-<code>java
-@Test
-public void test1(){
-//中间操作:不会执行任何操作
-Stream&lt;Employee&gt; stream = employees.stream()
-    .filter((e) -&gt; {
-        System.out.println(&quot;Stream API 的中间操作&quot;);
-        return e.getAge() &gt; 35;
-    });
-//终止操作:一次性执行全部内容,即&quot;惰性求值&quot;
-stream.forEach(System.out::println);
-}
-</code>
-内部迭代:迭代操作由Stream API完成
-外部迭代:迭代操作由自己完成
-<code>java
-//取前两个
-@Test
-public void test2(){
-employees.stream()
-    .filter((e) -&gt; e.getSalary()&gt;5000)
-    .limit(2)
-    .forEach(System.out::println);
-}
-</code>
-<code>java
-//跳过前两个
-@Test
-public void test2(){
-employees.stream()
-    .filter((e) -&gt; e.getSalary()&gt;5000)
-    .skip(2)
-    .forEach(System.out::println);
-}
-</code>
-<code>java
-//跳过前两个,并且去重,着需要重新hashcode方法
-@Test
-public void test2(){
-employees.stream()
-        .filter((e) -&gt; e.getSalary()&gt;5000)
-        .skip(2)
-        .distinct()
-        .forEach(System.out::println);
-}
-</code></li>
+<li>distinct-筛选,通过流所生成元素的hashcode()和equals()去除重复元素</li>
 </ul></li>
+</ul>
+
+<pre><code class="language-java">@Test
+public void test1(){
+    //中间操作:不会执行任何操作
+    Stream&lt;Employee&gt; stream = employees.stream()
+            .filter((e) -&gt; {
+                System.out.println(&quot;Stream API 的中间操作&quot;);
+                return e.getAge() &gt; 35;
+            });
+    //终止操作:一次性执行全部内容,即&quot;惰性求值&quot;
+    stream.forEach(System.out::println);
+}
+</code></pre>
+
+<p>内部迭代:迭代操作由Stream API完成
+外部迭代:迭代操作由自己完成</p>
+
+<pre><code class="language-java">//取前两个
+@Test
+public void test2(){
+    employees.stream()
+            .filter((e) -&gt; e.getSalary()&gt;5000)
+            .limit(2)
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<pre><code class="language-java">//跳过前两个
+@Test
+public void test2(){
+    employees.stream()
+            .filter((e) -&gt; e.getSalary()&gt;5000)
+            .skip(2)
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<pre><code class="language-java">//跳过前两个,并且去重,着需要重新hashcode方法
+@Test
+    public void test2(){
+        employees.stream()
+                .filter((e) -&gt; e.getSalary()&gt;5000)
+                .skip(2)
+                .distinct()
+                .forEach(System.out::println);
+    }
+</code></pre>
+
+<ul>
 <li>映射
 
 <ul>
 <li>map-接收Lambda,将元素转换成其他形式,或提取信息.接收一个函数作为参数,该函数会被应用到每个元素上,并将其映射成一个新的元素.</li>
-<li>flatMap-接收一个函数,作为参数.将流中的每个值都换成另一个流,然后把所有流都连接成一个流
-<code>java
-@Test
+<li>flatMap-接收一个函数,作为参数.将流中的每个值都换成另一个流,然后把所有流都连接成一个流</li>
+</ul></li>
+</ul>
+
+<pre><code class="language-java">@Test
 public void tets3(){
-List&lt;String&gt; list = Arrays.asList(&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;eee&quot;);
-list.stream()
-    .map((str) -&gt; str.toUpperCase())
-    .forEach(System.out::println);
-System.out.println(&quot;-----------------------------&quot;);
-employees.stream()
-    .map(Employee::getName)
-    .forEach(System.out::println);
+    List&lt;String&gt; list = Arrays.asList(&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;eee&quot;);
+    list.stream()
+            .map((str) -&gt; str.toUpperCase())
+            .forEach(System.out::println);
+    System.out.println(&quot;-----------------------------&quot;);
+    employees.stream()
+            .map(Employee::getName)
+            .forEach(System.out::println);
 }
-</code>
-<code>java
-public static Stream&lt;Character&gt; filterCharacter(String str){
-List&lt;Character&gt; list = new ArrayList&lt;&gt;();
-for (char ch : str.toCharArray()) {
-list.add(ch);
-}
-return list.stream();
+</code></pre>
+
+<pre><code class="language-java">public static Stream&lt;Character&gt; filterCharacter(String str){
+    List&lt;Character&gt; list = new ArrayList&lt;&gt;();
+    for (char ch : str.toCharArray()) {
+        list.add(ch);
+    }
+    return list.stream();
 }
 @Test
 public void test4(){
-List&lt;String&gt; list = Arrays.asList(&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;eee&quot;);
-list.stream()
-    .flatMap(TestStreamAPI1::filterCharacter)
-    .forEach(System.out::println);
+    List&lt;String&gt; list = Arrays.asList(&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;eee&quot;);
+    list.stream()
+            .flatMap(TestStreamAPI1::filterCharacter)
+            .forEach(System.out::println);
 }
-</code></li>
-</ul></li>
+</code></pre>
+
+<ul>
 <li>排序
 
 <ul>
 <li>1. sorted()自然排序</li>
-<li>2. sorted(Comparator com) - 定制排序
-<code>java
-@Test
-public void test5(){
-List&lt;String&gt; list = Arrays.asList(&quot;eee&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;aaa&quot;);
-list.stream()
-    .sorted()
-    .forEach(System.out::println);
-System.out.println(&quot;-----------------------&quot;);
-employees.stream()
-    .sorted((e1,e2) -&gt; {
-        if (e1.getAge()== e2.getAge()){
-            return e1.getName().compareTo(e2.getName());
-        }
-        return -e1.getName().compareTo(e2.getName());
-    })
-    .forEach(System.out::println);
-}
-</code></li>
+<li>2. sorted(Comparator com) - 定制排序</li>
 </ul></li>
+</ul>
+
+<pre><code class="language-java">@Test
+public void test5(){
+    List&lt;String&gt; list = Arrays.asList(&quot;eee&quot;,&quot;bbb&quot;,&quot;ccc&quot;,&quot;ddd&quot;,&quot;aaa&quot;);
+    list.stream()
+            .sorted()
+            .forEach(System.out::println);
+    System.out.println(&quot;-----------------------&quot;);
+    employees.stream()
+            .sorted((e1,e2) -&gt; {
+                if (e1.getAge()== e2.getAge()){
+                    return e1.getName().compareTo(e2.getName());
+                }
+                return -e1.getName().compareTo(e2.getName());
+            })
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<ul>
 <li>终止操作
 
 <ul>
@@ -449,159 +459,172 @@ employees.stream()
 <li>findAny-返回当前流中的任意元素</li>
 <li>count-返回流中元素的总个数</li>
 <li>max-返回流中元素的最大值</li>
-<li>min-返回流中元素的最小值
-<code>java
-@Test
-public void test6(){
-System.out.println(&quot;是否全匹配:&quot;+employees.stream()
-    .allMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
-System.out.println(&quot;是否有一个匹配&quot;+employees.stream()
-    .anyMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
-System.out.println(&quot;是否没有一个匹配&quot;+employees.stream()
-    .noneMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
-System.out.println(&quot;工资最高的人信息:&quot;+employees.stream()
-    .sorted((e1, e2) -&gt; -Double.compare(e1.getSalary(), e2.getSalary()))
-    .findFirst());
-System.out.println(&quot;找一个闲人:&quot;+employees.parallelStream()
-    .filter(e -&gt; e.getStatus().equals(Status.FREE))
-    .findAny());
-System.out.println(&quot;员工总数:&quot;+employees.parallelStream()
-    .count());
-System.out.println(&quot;年龄最大的员工是:&quot;+employees.parallelStream()
-    .max((e1, e2) -&gt; -Integer.compare(e1.getAge(), e1.getAge())));
-System.out.println(&quot;最低工资是:&quot;+employees.parallelStream()
-    .map(Employee::getSalary)
-    .min(Double::compare));
-}
-</code></li>
+<li>min-返回流中元素的最小值</li>
 </ul></li>
+</ul>
+
+<pre><code class="language-java">@Test
+public void test6(){
+    System.out.println(&quot;是否全匹配:&quot;+employees.stream()
+            .allMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
+    System.out.println(&quot;是否有一个匹配&quot;+employees.stream()
+            .anyMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
+    System.out.println(&quot;是否没有一个匹配&quot;+employees.stream()
+            .noneMatch(e -&gt; e.getStatus().equals(Status.BUSY)));
+    System.out.println(&quot;工资最高的人信息:&quot;+employees.stream()
+            .sorted((e1, e2) -&gt; -Double.compare(e1.getSalary(), e2.getSalary()))
+            .findFirst());
+    System.out.println(&quot;找一个闲人:&quot;+employees.parallelStream()
+            .filter(e -&gt; e.getStatus().equals(Status.FREE))
+            .findAny());
+    System.out.println(&quot;员工总数:&quot;+employees.parallelStream()
+            .count());
+    System.out.println(&quot;年龄最大的员工是:&quot;+employees.parallelStream()
+            .max((e1, e2) -&gt; -Integer.compare(e1.getAge(), e1.getAge())));
+    System.out.println(&quot;最低工资是:&quot;+employees.parallelStream()
+            .map(Employee::getSalary)
+            .min(Double::compare));
+}
+
+</code></pre>
+
+<ul>
 <li>归约
 
 <ul>
 <li>reduce(T identity,BinaryOPerator)/reduce(BinaryOperator)-可以将流中的元素反复结合起来,的到一个值
-&gt; 也称map-reduce模式
-<code>java
-@Test
-public void test7(){
-List&lt;Integer&gt; list = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
-System.out.println(&quot;数组元素的和为:&quot;+list.stream()
-    .reduce(0, (x, y) -&gt; x + y));
-System.out.println(&quot;工资总和为:&quot;+employees.stream()
-    .map(Employee::getSalary)
-    .reduce(Double::sum));
-}
-</code></li>
+&gt; 也称map-reduce模式</li>
 </ul></li>
+</ul>
+
+<pre><code class="language-java">@Test
+public void test7(){
+    List&lt;Integer&gt; list = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+    System.out.println(&quot;数组元素的和为:&quot;+list.stream()
+            .reduce(0, (x, y) -&gt; x + y));
+    System.out.println(&quot;工资总和为:&quot;+employees.stream()
+            .map(Employee::getSalary)
+            .reduce(Double::sum));
+}
+</code></pre>
+
+<ul>
 <li>收集
 
 <ul>
-<li>collect-将流转换为其他形式,接收一个collector接口的实现,用于给Stream中元素做汇总的方法
-<code>java
-//将对象的名字转成list-输出
-@Test
-public void test8(){
-employees.stream()
-    .map(Employee::getName)
-    .collect(Collectors.toList())
-    .forEach(System.out::println);
-}
-</code>
-<code>java
-//将对象的名字转成set(去重)-输出
-@Test
-public void test8(){
-employees.stream()
-    .map(Employee::getName)
-    .collect(Collectors.toSet())
-    .forEach(System.out::println);
-}
-</code>
-<code>java
-//将对象的名字转成hashSet-输出
-@Test
-public void test8(){
-employees.stream()
-    .map(Employee::getName)
-    .collect(Collectors.toCollection(Hash Set::new))
-    .forEach(System.out::println);
-}
-</code>
-<strong>得到工资平均值</strong>
-<code>java
-@Test
-public void test9(){
-System.out.println(employees.stream()
-    .collect(Collectors.averagingDouble(Employee::getSalary)));
-}
-</code>
-<code>java
-@Test
-public void test9(){
-System.out.println(&quot;工资平均值&quot;+employees.stream()
-    .collect(Collectors.averagingDouble(Employee::getSalary)));
-System.out.println(&quot;工资总和&quot;+employees.stream()
-    .collect(Collectors.summingDouble(Employee::getSalary)));
-System.out.println(&quot;工资最高员工&quot;+employees.stream()
-    .collect(Collectors.maxBy((e1,e2) -&gt; Double.compare(e1.getSalary(),e2.getSalary()))));
-System.out.println(employees.stream()
-    .map(Employee::getSalary)
-    .max(Double::compare));
-System.out.println(employees.stream()
-    .map(Employee::getSalary)
-    .reduce(Double::max));
-}
-</code>
-<strong>将集合按照状态分组</strong>
-<code>java
-@Test
-public void test10(){
-employees.stream()
-    .collect(Collectors.groupingBy(Employee::getStatus))
-    .entrySet()
-    .forEach(System.out::println);
-}
-</code>
-<strong>多级分组</strong>
-<code>java
-@Test
-public void test11(){
-employees.stream()
-    .collect(Collectors.groupingBy(Employee::getStatus,Collectors.groupingBy(e -&gt; {
-        if (e.getAge()&lt;=35){
-            return &quot;青年&quot;;
-        }else if(e.getAge()&lt;=50){
-            return &quot;中年&quot;;
-        }else {
-            return &quot;老年&quot;;
-        }
-    })))
-    .entrySet()
-    .forEach(System.out::println);
-}
-</code>
-<strong>分区</strong>
-<code>java
-@Test
-public void test12(){
-employees.stream()
-    .collect(Collectors.partitioningBy((e) -&gt; e.getSalary() &gt; 8000))
-    .entrySet()
-    .forEach(System.out::println);
-}
-</code>
-将集合中的一种元素属性拿出来,然后查看最大最小平均
-<code>java
-@Test
-public void test13(){
-DoubleSummaryStatistics collect = employees.stream()
-    .collect(Collectors.summarizingDouble(Employee::getSalary));
-System.out.println(&quot;最大值:&quot;+collect.getMax());
-System.out.println(&quot;最小值:&quot;+collect.getMin());
-System.out.println(&quot;平均值:&quot;+collect.getAverage());
-}
-</code></li>
+<li>collect-将流转换为其他形式,接收一个collector接口的实现,用于给Stream中元素做汇总的方法</li>
 </ul></li>
 </ul>
+
+<pre><code class="language-java">//将对象的名字转成list-输出
+@Test
+public void test8(){
+    employees.stream()
+            .map(Employee::getName)
+            .collect(Collectors.toList())
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<pre><code class="language-java">//将对象的名字转成set(去重)-输出
+@Test
+public void test8(){
+    employees.stream()
+            .map(Employee::getName)
+            .collect(Collectors.toSet())
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<pre><code class="language-java">//将对象的名字转成hashSet-输出
+@Test
+public void test8(){
+    employees.stream()
+            .map(Employee::getName)
+            .collect(Collectors.toCollection(Hash Set::new))
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<p><strong>得到工资平均值</strong></p>
+
+<pre><code class="language-java">@Test
+public void test9(){
+    System.out.println(employees.stream()
+            .collect(Collectors.averagingDouble(Employee::getSalary)));
+}
+</code></pre>
+
+<pre><code class="language-java">@Test
+public void test9(){
+    System.out.println(&quot;工资平均值&quot;+employees.stream()
+            .collect(Collectors.averagingDouble(Employee::getSalary)));
+    System.out.println(&quot;工资总和&quot;+employees.stream()
+            .collect(Collectors.summingDouble(Employee::getSalary)));
+    System.out.println(&quot;工资最高员工&quot;+employees.stream()
+            .collect(Collectors.maxBy((e1,e2) -&gt; Double.compare(e1.getSalary(),e2.getSalary()))));
+    System.out.println(employees.stream()
+            .map(Employee::getSalary)
+            .max(Double::compare));
+    System.out.println(employees.stream()
+            .map(Employee::getSalary)
+            .reduce(Double::max));
+}
+</code></pre>
+
+<p><strong>将集合按照状态分组</strong></p>
+
+<pre><code class="language-java">@Test
+public void test10(){
+    employees.stream()
+            .collect(Collectors.groupingBy(Employee::getStatus))
+            .entrySet()
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<p><strong>多级分组</strong></p>
+
+<pre><code class="language-java">@Test
+public void test11(){
+    employees.stream()
+            .collect(Collectors.groupingBy(Employee::getStatus,Collectors.groupingBy(e -&gt; {
+                if (e.getAge()&lt;=35){
+                    return &quot;青年&quot;;
+                }else if(e.getAge()&lt;=50){
+                    return &quot;中年&quot;;
+                }else {
+                    return &quot;老年&quot;;
+                }
+            })))
+            .entrySet()
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<p><strong>分区</strong></p>
+
+<pre><code class="language-java">@Test
+public void test12(){
+    employees.stream()
+            .collect(Collectors.partitioningBy((e) -&gt; e.getSalary() &gt; 8000))
+            .entrySet()
+            .forEach(System.out::println);
+}
+</code></pre>
+
+<p>将集合中的一种元素属性拿出来,然后查看最大最小平均</p>
+
+<pre><code class="language-java">
+@Test
+public void test13(){
+    DoubleSummaryStatistics collect = employees.stream()
+            .collect(Collectors.summarizingDouble(Employee::getSalary));
+    System.out.println(&quot;最大值:&quot;+collect.getMax());
+    System.out.println(&quot;最小值:&quot;+collect.getMin());
+    System.out.println(&quot;平均值:&quot;+collect.getAverage());
+}
+</code></pre>
 
 
 <footer class=" footline" >
@@ -758,19 +781,19 @@ System.out.println(&quot;平均值:&quot;+collect.getAverage());
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1577763956"></script>
-    <script src="/js/perfect-scrollbar.min.js?1577763956"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1577763956"></script>
-    <script src="/js/jquery.sticky.js?1577763956"></script>
-    <script src="/js/featherlight.min.js?1577763956"></script>
-    <script src="/js/highlight.pack.js?1577763956"></script>
+    <script src="/js/clipboard.min.js?1577764744"></script>
+    <script src="/js/perfect-scrollbar.min.js?1577764744"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1577764744"></script>
+    <script src="/js/jquery.sticky.js?1577764744"></script>
+    <script src="/js/featherlight.min.js?1577764744"></script>
+    <script src="/js/highlight.pack.js?1577764744"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1577763956"></script>
-    <script src="/js/learn.js?1577763956"></script>
-    <script src="/js/hugo-learn.js?1577763956"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1577764744"></script>
+    <script src="/js/learn.js?1577764744"></script>
+    <script src="/js/hugo-learn.js?1577764744"></script>
 
-    <link href="/mermaid/mermaid.css?1577763956" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1577763956"></script>
+    <link href="/mermaid/mermaid.css?1577764744" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1577764744"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
